@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.DotNet.CMake.Sdk">
+  <PropertyGroup>
+    <Platform>x64</Platform>
+    <VSWhereVersion>3.1.1</VSWhereVersion>
+    <CMakeLists>CMakeLists.txt</CMakeLists>
+  </PropertyGroup>
+</Project>
