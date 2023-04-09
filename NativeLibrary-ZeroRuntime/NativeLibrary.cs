@@ -47,7 +47,7 @@ namespace System
 
     public class Attribute { }
 
-    public enum AttributeTargets { Method = 0x0040 }
+    public enum AttributeTargets { }
 
     public sealed class AttributeUsageAttribute : Attribute
     {
@@ -74,16 +74,6 @@ namespace System.Runtime.InteropServices
     public sealed class DllImportAttribute : Attribute
     {
         public DllImportAttribute(string dllName) { }
-    }
-
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public sealed class UnmanagedCallersOnlyAttribute : Attribute
-    {
-        public UnmanagedCallersOnlyAttribute()
-        {
-        }
-
-        public string? EntryPoint;
     }
 }
 #endregion
@@ -132,13 +122,13 @@ unsafe class ExportMethods
     [DllImport("User32.dll")]
     static extern int MessageBoxW(nint hwnd, void* lpText, void* lpCaption, uint uType);
 
-    [UnmanagedCallersOnly(EntryPoint = "Add")]
+    [RuntimeExport("Add")]
     public static int Add(int a, int b)
     {
         return a + b;
     }
 
-    [UnmanagedCallersOnly(EntryPoint = "OnLoaded")]
+    [RuntimeExport("OnLoaded")]
     public static void OnLoaded()
     {
         var str = "Loaded from C#!";
@@ -148,7 +138,7 @@ unsafe class ExportMethods
         }
     }
 
-    [UnmanagedCallersOnly(EntryPoint = "OnUnloaded")]
+    [RuntimeExport("OnUnloaded")]
     public static void OnUnloaded()
     {
         var str = "Unloaded from C#!";

@@ -27,6 +27,12 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <RuntimeExportDef Include="Add"/>
+    <RuntimeExportDef Include="OnLoaded"/>
+    <RuntimeExportDef Include="OnUnloaded"/>
+  </ItemGroup>
+
+  <ItemGroup>
     <DirectPInvoke Include="user32" />
     <NativeLibrary Include="user32.lib" />
   </ItemGroup>
@@ -39,7 +45,7 @@
 
   <Target Name="AddNativeLibraryReferences" AfterTargets="ConsolidateNativeProjectReference">
     <ItemGroup>
-      <DirectPInvoke Include="$(OutputPath)\**\CustomDllMain.lib" />
+      <DirectPInvoke Include="$(OutputPath)\**\CustomDllMain" />
       <NativeLibrary Include="$(OutputPath)\**\CustomDllMain.lib" />
     </ItemGroup>
   </Target>
@@ -65,6 +71,16 @@
       <IlcReference Remove="@(IlcReference)" />
       <_TrimmerFeatureSettings Remove="@(_TrimmerFeatureSettings)" />
     </ItemGroup>
+  </Target>
+
+  <!-- We removed 'UnmanagedCallersOnly' (because it didn't work),
+       so we need to rewrite the export definition file. (Before link) -->
+  <Target Name="WriteCustomExportDef" BeforeTargets="LinkNative">
+    <ItemGroup>
+      <CustomExportDef Include="EXPORTS"/>
+      <CustomExportDef Include="@(RuntimeExportDef->' %(Identity)')"/>
+    </ItemGroup>
+    <WriteLinesToFile File="$(ExportsFile)" Lines="@(CustomExportDef)" Overwrite="true" WriteOnlyWhenDifferent="true" />
   </Target>
 
   <!-- Rewrite the rsp file, because the '-resilient' arg cannot be removed... -->
