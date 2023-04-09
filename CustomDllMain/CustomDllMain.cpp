@@ -13,6 +13,13 @@ BOOL WINAPI DllMain(
     DWORD fdwReason,     // reason for calling function
     LPVOID lpReserved )  // reserved
 {
+    /* 
+        We can also do something different here, such
+        as passing arguments to a C# method, just like:
+        'SharpDllMain(hinstDLL, fdwReason, lpReserved)'.
+        :)
+    */
+
     // Perform actions based on the reason for calling.
     switch( fdwReason )
     {
