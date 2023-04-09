@@ -6,7 +6,7 @@ namespace PInvokeTest;
 
 public class UnitTest1
 {
-    [DllImport(@"..\..\..\..\NativeLibrary-ZeroRuntime\bin\Release\net8.0\win-x64\publish\NativeLibrary.dll")]
+    [DllImport(@"..\..\..\..\..\NativeLibrary-ZeroRuntime\bin\Release\net8.0\win-x64\publish\NativeLibrary.dll")]
     private static extern int Add(int a, int b);
 
     [Fact]
