@@ -14,9 +14,20 @@ BOOL WINAPI DllMain(
     LPVOID lpReserved )  // reserved
 {
     /* 
-        We can also do something different here, such
-        as passing arguments to a C# method, just like:
-        'SharpDllMain(hinstDLL, fdwReason, lpReserved)'.
+        We can also do a few different things like
+        Create another DllMain method in c# and invoke it. Just like:
+        '
+          C#
+            [RuntimeExport("SharpDllMain")]
+            static int SharpDllMain(nint hinstDLL, ulong fdwReason, nint lpReserved)
+            {
+                ...
+            }
+
+          C/C++
+            extern "C" int SharpDllMain(HINSTANCE, DWORD, LPVOID);
+            // SharpDllMain(hinstDLL, fdwReason, lpReserved);
+        '.
         :)
     */
 

@@ -91,9 +91,9 @@
     <WriteLinesToFile File="%(ManagedBinary.IlcRspFile)" Lines="@(IlcArg)" Overwrite="true" WriteOnlyWhenDifferent="true" />
   </Target>
   
-  <!-- Because there are a lot of redundant arguments generated in the
-       'SetupOSSpecificProps' target. So we need to make a backup of some
-       of the arguments, delete the original arguments, and then restore them.
+  <!-- Because the 'SetupOSSpecificProps' target generates a lot of parameters
+       that we don't need.  Therefore, we need to make backups of some
+       parameters, delete the original parameters, and then restore them.
     -->
   <Target Name="BackupLinkerArg" BeforeTargets="SetupOSSpecificProps">
     <ItemGroup>
@@ -103,7 +103,7 @@
     </ItemGroup>
   </Target>
   
-  <!-- Copy from the 'Microsoft.NETCore.Native.Windows.targets', and the link arguments are simplified. -->
+  <!-- Copy from 'Microsoft.NETCore.Native.Windows.targets', and the parameters of the links are simplified. -->
   <Target Name="CustomizeLinkerArg" AfterTargets="SetupOSSpecificProps" DependsOnTargets="$(IlcDynamicBuildPropertyDependencies)">
     <ItemGroup>
       <LinkerArg Remove="@(LinkerArg)" />
