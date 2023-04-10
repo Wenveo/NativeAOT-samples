@@ -21,7 +21,7 @@
     <IlcGenerateMapFile>true</IlcGenerateMapFile>
     <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
     <IlcOptimizationPreference>Size</IlcOptimizationPreference>
-    <IlcSystemModule>NativeLibrary</IlcSystemModule>
+    <IlcSystemModule>NativeLibraryZ</IlcSystemModule>
     <EntryPointSymbol>DllMain</EntryPointSymbol>
     <PublishAot>true</PublishAot>
   </PropertyGroup>

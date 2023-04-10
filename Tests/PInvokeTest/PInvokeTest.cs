@@ -2,11 +2,9 @@ using Xunit;
 
 using System.Runtime.InteropServices;
 
-namespace PInvokeTest;
-
-public class AddTest
+public class PInvokeTest
 {
-    [DllImport(@"..\..\..\..\..\Samples\NativeLibrary-ZeroRuntime\bin\Release\net8.0\win-x64\publish\NativeLibrary.dll")]
+    [DllImport(@"..\..\..\..\..\Samples\NativeLibrary-ZeroRuntime\bin\Release\net8.0\win-x64\publish\NativeLibraryZ.dll")]
     private static extern int Add(int a, int b);
 
     [Fact]

@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-    HINSTANCE handle = LoadLibraryA("..\\..\\Samples\\NativeLibrary-ZeroRuntime\\bin\\Release\\net8.0\\win-x64\\publish\\NativeLibrary.dll");
+    HINSTANCE handle = LoadLibraryA("..\\..\\Samples\\NativeLibrary-ZeroRuntime\\bin\\Release\\net8.0\\win-x64\\publish\\NativeLibraryZ.dll");
 
     typedef int(*funcAdd)(int,int);
     funcAdd add = (funcAdd)GetProcAddress(handle, "Add");
