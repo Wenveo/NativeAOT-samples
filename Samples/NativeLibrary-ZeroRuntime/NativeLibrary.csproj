@@ -44,9 +44,9 @@
   </ItemGroup>
 
   <Target Name="AddNativeLibraryReferences" AfterTargets="ConsolidateNativeProjectReference">
-    <ItemGroup>
-      <DirectPInvoke Include="$(OutputPath)\**\CustomDllMain" />
-      <NativeLibrary Include="$(OutputPath)\**\CustomDllMain.lib" />
+    <ItemGroup Condition="'@(NativeProjectReference.CMakeProject)' != ''">
+      <DirectPInvoke Include="$(OutputPath)\$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject)))" />
+      <NativeLibrary Include="$(OutputPath)\$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject))).lib" />
     </ItemGroup>
   </Target>
 
