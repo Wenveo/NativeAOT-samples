@@ -1,0 +1,91 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- For cmake project references -->
+  <Target Name="AddNativeLibraryReferences" AfterTargets="ConsolidateNativeProjectReference">
+    <ItemGroup Condition="'@(NativeProjectReference.CMakeProject)' != ''">
+      <DirectPInvoke Include="$(OutputPath)\$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject)))" />
+      <NativeLibrary Include="$(OutputPath)\$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject))).lib" />
+    </ItemGroup>
+  </Target>
+
+  <!-- The project file pretends this is .NET, but it's not .NET. Remove all assembly references the .NET SDK added. -->
+  <Target Name="CustomizeReferences" BeforeTargets="BeforeCompile" AfterTargets="FindReferenceAssembliesForReferences" Condition="'$(RemoveFrameworkReferences)' == 'true'">
+    <ItemGroup>
+      <ReferencePathWithRefAssemblies Remove="@(ReferencePathWithRefAssemblies)" />
+      <ReferencePath Remove="@(ReferencePath)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- The AOT compiler would want to mirror these as AppContext switches. Prevent that. -->
+  <Target Name="RemoveHostConfigurationOptions" BeforeTargets="WriteIlcRspFileForCompilation" Condition="$(RemoveIlcHostConfigurationOptions) == 'true'">
+    <ItemGroup>
+      <RuntimeHostConfigurationOption Remove="@(RuntimeHostConfigurationOption)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Remove the default assembly reference from ILC -->
+  <Target Name="RemoveIlcReferences" BeforeTargets="WriteIlcRspFileForCompilation" Condition="'$(RemoveIlcReferences)' == 'true'">
+    <ItemGroup>
+      <IlcReference Remove="@(IlcReference)" />
+      <_TrimmerFeatureSettings Remove="@(_TrimmerFeatureSettings)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- We removed 'UnmanagedCallersOnly' (because it didn't work),
+       so we need to rewrite the export definition file. (Before link) -->
+  <Target Name="WriteCustomExportDef" BeforeTargets="LinkNative" Condition="'$(UseCustomExportDef)' == 'true'">
+    <ItemGroup>
+      <CustomExportDef Include="EXPORTS"/>
+      <CustomExportDef Include="@(RuntimeExportDef->' %(Identity)')"/>
+    </ItemGroup>
+    <WriteLinesToFile File="$(ExportsFile)" Lines="@(CustomExportDef)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+
+  <!-- Rewrite the rsp file, because the '-resilient' arg cannot be removed... -->
+  <Target Name="RewriteRspFile" AfterTargets="WriteIlcRspFileForCompilation" Condition="'$(RemoveIlcResilient)' == 'true'">
+    <ItemGroup>
+      <IlcArg Remove="@(IlcArg)" Condition="'%(Identity)' == '--resilient'"/>
+    </ItemGroup>
+    <WriteLinesToFile File="%(ManagedBinary.IlcRspFile)" Lines="@(IlcArg)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+  
+  <!-- Because the 'SetupOSSpecificProps' target generates a lot of parameters
+       that we don't need.  Therefore, we need to make backups of some
+       parameters, delete the original parameters, and then restore them.
+    -->
+  <Target Name="BackupLinkerArg" BeforeTargets="SetupOSSpecificProps" Condition="'$(UseCustomLinkerArgs)' == 'true'">
+    <ItemGroup>
+      <BackupLinkerArg Include="@(LinkerArg)"/>
+      <BackupDirectPInvoke Include="@(DirectPInvoke)"/>
+      <BackupNativeLibrary Include="@(NativeLibrary)"/>
+    </ItemGroup>
+  </Target>
+  
+  <!-- Copy from 'Microsoft.NETCore.Native.Windows.targets', and the parameters of the links are simplified. -->
+  <Target Name="CustomizeLinkerArg" AfterTargets="SetupOSSpecificProps" DependsOnTargets="$(IlcDynamicBuildPropertyDependencies)" Condition="'$(UseCustomLinkerArgs)' == 'true'">
+    <ItemGroup>
+      <LinkerArg Remove="@(LinkerArg)" />
+      <LinkerArg Include="@(BackupLinkerArg)"/>
+      <DirectPInvoke Remove="@(DirectPInvoke)" />
+      <DirectPInvoke Include="@(BackupDirectPInvoke)"/>
+      <NativeLibrary Remove="@(NativeLibrary)" />
+      <NativeLibrary Include="@(BackupNativeLibrary)"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <LinkerArg Condition="'$(NativeLib)' == 'Shared'" Include="/DLL" />
+      <LinkerArg Include="@(NativeLibrary->'&quot;%(Identity)&quot;')" />
+      <LinkerArg Include="/NOLOGO /MANIFEST:NO" />
+      <LinkerArg Condition="$(NativeDebugSymbols) == 'true'" Include="/DEBUG" />
+      <!-- The runtime is not compatible with jump stubs inserted by incremental linking. --> 
+      <LinkerArg Include="/INCREMENTAL:NO" />
+      <LinkerArg Condition="'$(LinkerSubsystem)' != ''" Include="/SUBSYSTEM:$(LinkerSubsystem)" />
+      <LinkerArg Condition="'$(OutputType)' == 'WinExe' or '$(OutputType)' == 'Exe' or '$(EntryPointSymbol)' != ''" Include="/ENTRY:$(EntryPointSymbol) /NOEXP /NOIMPLIB" />
+      <LinkerArg Condition="'$(ControlFlowGuard)' == 'Guard'" Include="/guard:cf" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+      <LinkerArg Include="/OPT:REF" />
+      <LinkerArg Include="/OPT:ICF" />
+    </ItemGroup>
+  </Target>
+</Project>

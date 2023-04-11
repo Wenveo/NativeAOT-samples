@@ -1,0 +1,15 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(UseCustomRuntimeMetadata)' == 'true'">
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <RuntimeMetadataVersion>v4.0.30319</RuntimeMetadataVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <!-- For Windows -->
+  <Import Project="$([System.IO.Path]::Combine(_BuildDirectory, NativeAOT.Windows.targets))" Condition="'$(OS)' == 'Windows_NT'"/>
+  
+  <!-- TODO: Build on unix -->
+  <!-- <Import Project="$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), Build, NativeAOT.Unix.targets))" Condition="'$(OS)' != 'Windows_NT'"/> -->
+</Project>
