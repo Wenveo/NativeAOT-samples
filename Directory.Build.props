@@ -1,5 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_BuildDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), Build))</_BuildDirectory>
+    <_EngDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), Eng))</_EngDirectory>
   </PropertyGroup>
 </Project>

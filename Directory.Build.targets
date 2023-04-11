@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <!-- For Windows -->
-  <Import Project="$([System.IO.Path]::Combine(_BuildDirectory, NativeAOT.Windows.targets))" Condition="'$(OS)' == 'Windows_NT'"/>
+  <Import Project="$([System.IO.Path]::Combine($(_EngDirectory), NativeAOT.Windows.targets))" Condition="'$(OS)' == 'Windows_NT'"/>
   
   <!-- TODO: Build on unix -->
   <!-- <Import Project="$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), Build, NativeAOT.Unix.targets))" Condition="'$(OS)' != 'Windows_NT'"/> -->
