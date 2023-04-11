@@ -1,6 +1,20 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <_ArtifactsDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), artifacts))</_ArtifactsDirectory>
     <_BuildDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), build))</_BuildDirectory>
     <_EngDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), eng))</_EngDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <VSWhereVersion Condition="'$(VSWhereVersion)' == ''">3.1.1</VSWhereVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RepoBuildDir>$([System.IO.Path]::Combine($(_BuildDirectory), $(MSBuildProjectName), $(Configuration), $(Platform)))</RepoBuildDir>
+    <CMakeOutputDir>$(RepoBuildDir)</CMakeOutputDir>
+    <OutputPath>$(RepoBuildDir)</OutputPath>
+    <PublishDir>$(_ArtifactsDirectory)</PublishDir>
   </PropertyGroup>
 </Project>

@@ -2,8 +2,8 @@
   <!-- For cmake project references -->
   <Target Name="AddNativeLibraryReferences" AfterTargets="ConsolidateNativeProjectReference">
     <ItemGroup Condition="'@(NativeProjectReference.CMakeProject)' != ''">
-      <DirectPInvoke Include="$(OutputPath)\$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject)))" />
-      <NativeLibrary Include="$(OutputPath)\$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject))).lib" />
+      <DirectPInvoke Include="$(OutputPath)$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject)))" />
+      <NativeLibrary Include="$(OutputPath)$([System.IO.Path]::GetFileNameWithoutExtension(%(NativeProjectReference.CMakeProject))).lib" />
     </ItemGroup>
   </Target>
 
