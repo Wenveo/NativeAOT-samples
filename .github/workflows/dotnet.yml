@@ -39,5 +39,5 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: NativeAOT-samples-${{matrix.platform}}
+        name: NativeAOT-samples-${{ matrix.platform }}
         path: artifacts

@@ -9,7 +9,7 @@ Param(
 function Publish-Projects {
     param ([string[]]$Projects)
     foreach ($item in $Projects) {
-        dotnet publish $item -c $Configuration -r $Platform --no-self-contained
+        dotnet publish $item -c $Configuration -r $Platform --no-self-contained --force
     }
 }
 
