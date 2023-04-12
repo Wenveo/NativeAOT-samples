@@ -7,6 +7,13 @@
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- DotNet publish -->
+    <PublishDir Condition="'$(OutputType)' != 'Exe'" >$([System.IO.Path]::Combine($(RepoArtifactsDir), lib))</PublishDir>
+    <PublishDir Condition="'$(IsTestProject)' != 'true' and '$(OutputType)' == 'Exe'" >$([System.IO.Path]::Combine($(RepoArtifactsDir), bin))</PublishDir>
+    <PublishDir Condition="'$(IsTestProject)' == 'true' and '$(OutputType)' == 'Exe'" >$([System.IO.Path]::Combine($(RepoArtifactsDir), tests))</PublishDir>
+  </PropertyGroup>
+
   <Target Name="DefinePublish" BeforeTargets="BeforeBuild" Condition="'$(_IsPublishing)' == 'true'">
     <PropertyGroup>
       <!-- CMake install target -->
