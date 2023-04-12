@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <RepoArtifactsDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), artifacts))</RepoArtifactsDir>
-    <RepoBuildDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), build))</RepoBuildDir>
+    <RepoBuildsDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), builds))</RepoBuildsDir>
     <RepoEngDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), eng))</RepoEngDir>
   </PropertyGroup>
 
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputCacheDir>$([System.IO.Path]::Combine($(RepoBuildDir), $(MSBuildProjectName), $(Configuration), $(Platform)))</OutputCacheDir>
+    <OutputCacheDir>$([System.IO.Path]::Combine($(RepoBuildsDir), $(MSBuildProjectName), $(Configuration), $(Platform)))</OutputCacheDir>
     <!-- For all projects -->
     <OutputPath>$(OutputCacheDir)</OutputPath>
     <!-- CMake build cache -->
