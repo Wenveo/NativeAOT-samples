@@ -10,10 +10,6 @@ function Publish-Projects {
     param ([string[]]$Projects)
     foreach ($item in $Projects) {
         dotnet publish $item -c $Configuration -r $Platform --no-self-contained
-        # if ($LastExitCode -ne 0) {
-        #     Write-Error "Failed to build the project: '($item)'"
-        #     exit 1
-        # }
     }
 }
 
