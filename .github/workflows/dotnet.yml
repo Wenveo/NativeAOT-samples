@@ -15,8 +15,8 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        platform: [ win-x64 ]
-        configuration: [ Release ]
+        build-platform: [ win-x64 ]
+        build-configuration: [ Release ]
         dotnet-version: [ '8.0.x' ]
 
     steps:
@@ -32,12 +32,9 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
 
     - name: Build all projects
-      run:  .\build.ps1 -Configuration $env:Configuration -Platform $env:Platform
-      env:
-        Configuration: ${{ matrix.configuration }}
-        Platform: ${{ matrix.platform }}
+      run:  .\build.ps1 -Configuration ${{ matrix.build-configuration }} -Platform ${{ matrix.build-platform }}
 
     - uses: actions/upload-artifact@v3
       with:
-        name: NativeAOT-samples-${{ matrix.platform }}
+        name: NativeAOT-samples-${{ matrix.build-platform }}
         path: artifacts
