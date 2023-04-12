@@ -35,8 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <DirectPInvoke Include="user32" />
-    <NativeLibrary Include="user32.lib" />
+    <DirectPInvoke Include="kernel32" />
+    <NativeLibrary Include="kernel32.lib" />
   </ItemGroup>
 
   <Import Project="ProjectReference.targets" Sdk="Microsoft.DotNet.CMake.Sdk" />

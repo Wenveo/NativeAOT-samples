@@ -119,8 +119,11 @@ namespace Internal.Runtime.CompilerHelpers
 
 unsafe class ExportMethods
 {
-    [DllImport("User32.dll")]
-    static extern int MessageBoxW(nint hwnd, void* lpText, void* lpCaption, uint uType);
+    [DllImport("kernel32")]
+    static extern IntPtr GetStdHandle(int nStdHandle);
+
+    [DllImport("kernel32")]
+    static extern IntPtr WriteConsoleW(IntPtr hConsole, void* lpBuffer, int charsToWrite, out int charsWritten, void* reserved);
 
     [RuntimeExport("Add")]
     public static int Add(int a, int b)
@@ -131,20 +134,20 @@ unsafe class ExportMethods
     [RuntimeExport("OnLoaded")]
     public static void OnLoaded()
     {
-        var str = "Loaded from C#!";
+        var str = "NativeLibraryZ: Loaded from C#!\n";
         fixed (char* ptr = str)
         {
-            MessageBoxW(0, ptr, ptr, 0x0U);
+            WriteConsoleW(GetStdHandle(-11), ptr, str.Length, out int _, null);
         }
     }
 
     [RuntimeExport("OnUnloaded")]
     public static void OnUnloaded()
     {
-        var str = "Unloaded from C#!";
+        var str = "NativeLibraryZ: Unloaded from C#!\n";
         fixed (char* ptr = str)
         {
-            MessageBoxW(0, ptr, ptr, 0x0U);
+            WriteConsoleW(GetStdHandle(-11), ptr, str.Length, out int _, null);
         }
     }
 }
