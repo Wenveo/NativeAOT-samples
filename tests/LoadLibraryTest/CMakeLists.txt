@@ -4,6 +4,6 @@ if (DEFINED PUBLISH)
   add_definitions(-DPUBLISH)
 endif()
 
-add_executable(LoadLibraryTest LoadLibraryTest.c)
+add_executable(${PROJECT_NAME} LoadLibraryTest.c)
 
-install (TARGETS LoadLibraryTest RUNTIME DESTINATION tests)
+install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION tests)
