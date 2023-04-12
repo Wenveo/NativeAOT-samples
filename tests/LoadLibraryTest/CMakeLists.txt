@@ -1,4 +1,9 @@
 project (LoadLibraryTest)
 
+if (DEFINED PUBLISH)
+  add_definitions(-DPUBLISH)
+endif()
+
 add_executable(LoadLibraryTest LoadLibraryTest.c)
-install (TARGETS LoadLibraryTest DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/../../artifacts/tests)
+
+install (TARGETS LoadLibraryTest RUNTIME DESTINATION tests)

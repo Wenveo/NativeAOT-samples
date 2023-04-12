@@ -7,9 +7,22 @@
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
+  <Target Name="DefinePublish" BeforeTargets="BeforeBuild" Condition="'$(_IsPublishing)' == 'true'">
+    <PropertyGroup>
+      <!-- CMake install target -->
+      <CMakeInstallDir>$(RepoArtifactsDir)</CMakeInstallDir>
+      <!-- CSharp defines -->
+      <DefineConstants>$(DefineConstants);PUBLISH;</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <CMakeDefines Include="PUBLISH"/>
+    </ItemGroup>
+  </Target>
+
   <!-- For Windows -->
-  <Import Project="$([System.IO.Path]::Combine($(_EngDirectory), NativeAOT.Windows.targets))" Condition="'$(OS)' == 'Windows_NT'"/>
+  <Import Project="$([System.IO.Path]::Combine($(RepoEngDir), NativeAOT.Windows.targets))" Condition="'$(OS)' == 'Windows_NT'"/>
   
   <!-- TODO: Build on unix -->
-  <!-- <Import Project="$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), Build, NativeAOT.Unix.targets))" Condition="'$(OS)' != 'Windows_NT'"/> -->
+  <!-- <Import Project="$([System.IO.Path]::Combine($(RepoEngDir), Build, NativeAOT.Unix.targets))" Condition="'$(OS)' != 'Windows_NT'"/> -->
 </Project>

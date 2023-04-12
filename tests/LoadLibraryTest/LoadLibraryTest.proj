@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.DotNet.CMake.Sdk">
   <PropertyGroup>
     <CMakeLists>CMakeLists.txt</CMakeLists>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\samples\NativeLibrary-ZeroRuntime\NativeLibraryZ.csproj" SkipGetTargetFrameworkProperties="true" ReferenceOutputAssembly="false" Targets="Publish" />
+  </ItemGroup>
 </Project>

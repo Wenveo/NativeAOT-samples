@@ -1,8 +1,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_ArtifactsDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), artifacts))</_ArtifactsDirectory>
-    <_BuildDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), build))</_BuildDirectory>
-    <_EngDirectory>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), eng))</_EngDirectory>
+    <RepoArtifactsDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), artifacts))</RepoArtifactsDir>
+    <RepoBuildDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), build))</RepoBuildDir>
+    <RepoEngDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), eng))</RepoEngDir>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,9 +12,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RepoBuildDir>$([System.IO.Path]::Combine($(_BuildDirectory), $(MSBuildProjectName), $(Configuration), $(Platform)))</RepoBuildDir>
-    <CMakeOutputDir>$(RepoBuildDir)</CMakeOutputDir>
-    <OutputPath>$(RepoBuildDir)</OutputPath>
-    <PublishDir>$(_ArtifactsDirectory)</PublishDir>
+    <OutputCacheDir>$([System.IO.Path]::Combine($(RepoBuildDir), $(MSBuildProjectName), $(Configuration), $(Platform)))</OutputCacheDir>
+    <!-- For all projects -->
+    <OutputPath>$(OutputCacheDir)</OutputPath>
+    <!-- CMake build cache -->
+    <CMakeOutputDir>$(OutputCacheDir)</CMakeOutputDir>
+    <!-- DotNet publish -->
+    <PublishDir Condition="'$(OutputType)' != 'Exe'" >$([System.IO.Path]::Combine($(RepoArtifactsDir), lib))</PublishDir>
+    <PublishDir Condition="'$(IsTestProject)' != 'true' and '$(OutputType)' == 'Exe'" >$([System.IO.Path]::Combine($(RepoArtifactsDir), bin))</PublishDir>
+    <PublishDir Condition="'$(IsTestProject)' == 'true' and '$(OutputType)' == 'Exe'" >$([System.IO.Path]::Combine($(RepoArtifactsDir), tests))</PublishDir>
   </PropertyGroup>
 </Project>

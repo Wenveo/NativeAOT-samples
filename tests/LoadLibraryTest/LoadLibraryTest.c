@@ -3,16 +3,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char* argv[])
+#ifdef PUBLISH
+    #define LibraryPath "..\\lib\\NativeLibraryZ.dll"
+#else
+    #define LibraryPath "..\\..\\..\\..\\..\\..\\artifacts\\lib\\NativeLibraryZ.dll"
+#endif
+
+int callAddFunc(char* libPath, int a, int b)
 {
-    HINSTANCE handle = LoadLibraryA("..\\NativeLibraryZ.dll");
+    HINSTANCE handle = LoadLibraryA(libPath);
 
     typedef int(*funcAdd)(int,int);
     funcAdd add = (funcAdd)GetProcAddress(handle, "Add");
 
-    int result = add(11, 22);
-    printf("result: %i\n", result);
-
+    int ret = add(a, b);
     FreeLibrary(handle);
-    return 0;
+    return ret;
+}
+
+int main(int argc, char* argv[])
+{
+    int result = callAddFunc(LibraryPath, 11, 22);
+    return printf("result: %i\n", result);
 }

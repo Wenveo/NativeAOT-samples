@@ -1,16 +1,16 @@
-using Xunit;
-
 using System.Runtime.InteropServices;
 
-public class PInvokeTest
+var ret = Add(12, 24);
+if (ret is not 36)
 {
-    [DllImport(@"..\..\..\..\..\artifacts\NativeLibraryZ.dll")]
-    private static extern int Add(int a, int b);
-
-    [Fact]
-    public void PInvoke_AddTest()
-    {
-        var ret = Add(20, 30);
-        Assert.False(ret != 50, "Wrong!");
-    }
+    throw new InvalidDataException("Wrong!");
 }
+
+Console.WriteLine($"Result: {ret}");
+
+#if PUBLISH
+[DllImport("..\\lib\\NativeLibraryZ.dll")]
+#else
+[DllImport("..\\..\\..\\..\\..\\..\\artifacts\\lib\\NativeLibraryZ.dll")]
+#endif
+static extern int Add(int a, int b);
