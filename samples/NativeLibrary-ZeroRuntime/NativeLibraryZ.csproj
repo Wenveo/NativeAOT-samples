@@ -9,6 +9,7 @@
     <!-- Custom props -->
     <RemoveFrameworkReferences>true</RemoveFrameworkReferences>
     <RemoveIlcHostConfigurationOptions>true</RemoveIlcHostConfigurationOptions>
+    <RemoveIlcNativeLibraryReferences>true</RemoveIlcNativeLibraryReferences>
     <RemoveIlcReferences>true</RemoveIlcReferences>
     <RemoveIlcResilient>true</RemoveIlcResilient>
     <UseCustomExportDef>true</UseCustomExportDef>

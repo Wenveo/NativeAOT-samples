@@ -30,7 +30,7 @@
     </ItemGroup>
   </Target>
 
-  <!-- We removed 'UnmanagedCallersOnly' (because it didn't work),
+  <!-- We removed 'UnmanagedCallersOnly' (because it didn't work with no-runtime),
        so we need to rewrite the export definition file. (Before link) -->
   <Target Name="WriteCustomExportDef" BeforeTargets="LinkNative" Condition="'$(UseCustomExportDef)' == 'true'">
     <ItemGroup>
@@ -52,7 +52,7 @@
        that we don't need.  Therefore, we need to make backups of some
        parameters, delete the original parameters, and then restore them.
     -->
-  <Target Name="BackupLinkerArg" BeforeTargets="SetupOSSpecificProps" Condition="'$(UseCustomLinkerArgs)' == 'true'">
+  <Target Name="BackupLinkerArg" BeforeTargets="SetupOSSpecificProps" Condition="'$(RemoveIlcNativeLibraryReferences)' == 'true'">
     <ItemGroup>
       <BackupLinkerArg Include="@(LinkerArg)"/>
       <BackupDirectPInvoke Include="@(DirectPInvoke)"/>
@@ -60,9 +60,9 @@
     </ItemGroup>
   </Target>
   
-  <!-- Copy from 'Microsoft.NETCore.Native.Windows.targets', and the parameters of the links are simplified. -->
+  <!-- Copy from 'Microsoft.NETCore.Native.Windows.targets', Customize some parameters. -->
   <Target Name="CustomizeLinkerArg" AfterTargets="SetupOSSpecificProps" DependsOnTargets="$(IlcDynamicBuildPropertyDependencies)" Condition="'$(UseCustomLinkerArgs)' == 'true'">
-    <ItemGroup>
+    <ItemGroup Condition="'$(RemoveIlcNativeLibraryReferences)' == 'true'">
       <LinkerArg Remove="@(LinkerArg)" />
       <LinkerArg Include="@(BackupLinkerArg)"/>
       <DirectPInvoke Remove="@(DirectPInvoke)" />
@@ -79,7 +79,8 @@
       <!-- The runtime is not compatible with jump stubs inserted by incremental linking. --> 
       <LinkerArg Include="/INCREMENTAL:NO" />
       <LinkerArg Condition="'$(LinkerSubsystem)' != ''" Include="/SUBSYSTEM:$(LinkerSubsystem)" />
-      <LinkerArg Condition="'$(OutputType)' == 'WinExe' or '$(OutputType)' == 'Exe' or '$(EntryPointSymbol)' != ''" Include="/ENTRY:$(EntryPointSymbol) /NOEXP /NOIMPLIB" />
+      <!-- The ForceIlcEntryPointSymbol property is a custom property for samples -->
+      <LinkerArg Condition="'$(OutputType)' == 'WinExe' or '$(OutputType)' == 'Exe' or '$(ForceIlcEntryPointSymbol)' == 'true'" Include="/ENTRY:$(EntryPointSymbol) /NOEXP /NOIMPLIB" />
       <LinkerArg Condition="'$(ControlFlowGuard)' == 'Guard'" Include="/guard:cf" />
     </ItemGroup>
 
