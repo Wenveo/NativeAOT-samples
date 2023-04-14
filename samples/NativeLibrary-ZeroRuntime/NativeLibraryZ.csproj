@@ -43,6 +43,6 @@
   <Import Project="ProjectReference.targets" Sdk="Microsoft.DotNet.CMake.Sdk" />
 
   <ItemGroup>
-    <NativeProjectReference Include="..\CustomDllMain\CMakeLists.txt" CMakeProject="..\CustomDllMain\CustomDllMain.proj" BuildNative="true"/>
+    <NativeProjectReference Include="..\CustomNativeDllMain\CMakeLists.txt" CMakeProject="..\CustomNativeDllMain\CustomNativeDllMain.proj" BuildNative="true"/>
   </ItemGroup>
 </Project>
