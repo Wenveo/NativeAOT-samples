@@ -52,7 +52,7 @@
        that we don't need.  Therefore, we need to make backups of some
        parameters, delete the original parameters, and then restore them.
     -->
-  <Target Name="BackupLinkerArg" BeforeTargets="SetupOSSpecificProps" Condition="'$(RemoveIlcNativeLibraryReferences)' == 'true'">
+  <Target Name="BackupIlcNativeLibraryReferences" BeforeTargets="SetupOSSpecificProps" Condition="'$(RemoveIlcNativeLibraryReferences)' == 'true'">
     <ItemGroup>
       <BackupLinkerArg Include="@(LinkerArg)"/>
       <BackupDirectPInvoke Include="@(DirectPInvoke)"/>
@@ -61,8 +61,8 @@
   </Target>
   
   <!-- Copy from 'Microsoft.NETCore.Native.Windows.targets', Customize some parameters. -->
-  <Target Name="CustomizeLinkerArg" AfterTargets="SetupOSSpecificProps" DependsOnTargets="$(IlcDynamicBuildPropertyDependencies)" Condition="'$(UseCustomLinkerArgs)' == 'true'">
-    <ItemGroup Condition="'$(RemoveIlcNativeLibraryReferences)' == 'true'">
+  <Target Name="CustomizeIlcNativeLibraryReferences" AfterTargets="SetupOSSpecificProps" DependsOnTargets="$(IlcDynamicBuildPropertyDependencies)" Condition="'$(RemoveIlcNativeLibraryReferences)' == 'true'">
+    <ItemGroup>
       <LinkerArg Remove="@(LinkerArg)" />
       <LinkerArg Include="@(BackupLinkerArg)"/>
       <DirectPInvoke Remove="@(DirectPInvoke)" />

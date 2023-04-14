@@ -13,7 +13,6 @@
     <RemoveIlcReferences>true</RemoveIlcReferences>
     <RemoveIlcResilient>true</RemoveIlcResilient>
     <UseCustomExportDef>true</UseCustomExportDef>
-    <UseCustomLinkerArgs>true</UseCustomLinkerArgs>
     <UseCustomRuntimeMetadata>true</UseCustomRuntimeMetadata>
 
     <!-- For ILC -->
