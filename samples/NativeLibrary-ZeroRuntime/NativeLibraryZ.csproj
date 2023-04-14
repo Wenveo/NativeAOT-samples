@@ -14,6 +14,7 @@
     <RemoveIlcResilient>true</RemoveIlcResilient>
     <UseCustomExportDef>true</UseCustomExportDef>
     <UseCustomRuntimeMetadata>true</UseCustomRuntimeMetadata>
+    <ForceIlcEntryPointSymbol>true</ForceIlcEntryPointSymbol>
 
     <!-- For ILC -->
     <NativeLib>Shared</NativeLib>
